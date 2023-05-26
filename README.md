@@ -1,5 +1,7 @@
 # Pramata Cryptocurrency App
 
+
+visit deployed link : https://client-vivekjawale.vercel.app/
 The Pramata Cryptocurrency App is a web application built using the MERN (MongoDB, Express.js, React, Node.js) stack. It allows users to register, log in, and access a dashboard where they can view various mapped currencies.
 
 ## Installation
