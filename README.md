@@ -6,7 +6,7 @@ The Pramata Cryptocurrency App is a web application built using the MERN (MongoD
 
 To use the app, follow these steps:
 
-1. Clone the repository: git clone <repository_url>
+1. Clone the repository: git clone https://github.com/VivekJawale/Pramata_Assignment.git
 
 2.Change to the server directory: cd server
 
