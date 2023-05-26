@@ -1,12 +1,12 @@
-import logo from './logo.svg';
+import AllRoutes from './AllRoutes/AllRoutes';
 import './App.css';
-import AuthForm from './Pages/AuthForm';
+
 
 function App() {
   return (
-    <div className="App">
-      <AuthForm />
-    </div>
+    <>
+      <AllRoutes/>
+    </>
   );
 }
 

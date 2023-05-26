@@ -6,22 +6,10 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 const authController = {
     login: async (req, res) => {
-        const { username, email, password } = req.body;
+        const { username,  password } = req.body;
         try {
             if (username && password) {
                 const user = await User.findOne({ username: username });
-                if (user) {
-                    const isPasswordValid = bcrypt.compareSync(password, user.password);
-                    if (isPasswordValid) {
-                        const token = jwt.sign({ id: user._id }, SECRET_KEY);
-                        return res.status(200).send({ message: "Login successful", data: { token, user } });
-                    } else {
-                        return res.status(400).send({ message: "Invalid password" });
-                    }
-                }
-                return res.status(401).send({ message: "User not registered" });
-            } else if (email && password) {
-                const user = await User.findOne({ email: email });
                 if (user) {
                     const isPasswordValid = bcrypt.compareSync(password, user.password);
                     if (isPasswordValid) {
@@ -53,9 +41,8 @@ const authController = {
                     password: HashedPass
                 })
                 return res.status(201).send({ message: "User created successfully", data: newUser });
-            }else{
+            } else {
                 return res.status(400).send({ message: "Invalid credentials" });
-        
             }
         } catch (error) {
             return res.status(500).send({ message: error.message });

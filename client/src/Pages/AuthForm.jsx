@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
+import { Box, Button, FormControl, FormLabel, Heading, Input, Stack, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     setIsLogin(!isLogin);
@@ -33,14 +37,29 @@ const AuthForm = () => {
         });
         console.log('Login successful');
         console.log('Token:', response.data.data.token);
-        alert('Login successful. Please proceed to the dashboard.');
+        localStorage.setItem('token', response.data.data.token);
+        toast({
+          title: 'Login Successful',
+          description: 'Please proceed to the dashboard.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate('/dashboard');
       } else {
-        const response = await axios.post('http://localhost:8080/api/signup', {
+        await axios.post('http://localhost:8080/api/register', {
           username,
           password,
         });
-        alert('Registration successful. Please login.');
-        
+        console.log('Registration successful');
+        toast({
+          title: 'Registration Successful',
+          description: 'Please login.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        setIsLogin(true); // Switch back to login after successful registration
       }
 
       // Reset form fields and error state
@@ -51,38 +70,45 @@ const AuthForm = () => {
       // Handle login or registration error
       console.error('Error:', error.response.data.error);
       setError(error.response.data.error);
+      toast({
+        title: 'Error',
+        description: error.response.data.error,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <div>
-      <h2>{isLogin ? 'Login' : 'Register'}</h2>
+    <Box maxWidth="md" mx="auto" mt={8} p={6} borderWidth={1} borderRadius="md" boxShadow="md">
+      <Heading as="h2" mb={4} textAlign="center">
+        {isLogin ? 'Login' : 'Register'}
+      </Heading>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={handleUsernameChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        {error && <div>{error}</div>}
-        <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
+        <Stack spacing={3}>
+          <FormControl isRequired>
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <Input type="text" id="username" value={username} onChange={handleUsernameChange} />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <Input type="password" id="password" value={password} onChange={handlePasswordChange} />
+          </FormControl>
+          {error && (
+            <Text color="red.500" fontSize="sm">
+              {error}
+            </Text>
+          )}
+          <Button type="submit" colorScheme="teal" isFullWidth>
+            {isLogin ? 'Login' : 'Register'}
+          </Button>
+        </Stack>
       </form>
-      <button onClick={handleToggle}>
+      <Button onClick={handleToggle} mt={4} variant="link" colorScheme="teal" alignSelf="center">
         {isLogin ? 'Switch to Register' : 'Switch to Login'}
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 

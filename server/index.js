@@ -5,6 +5,7 @@ const connect = require('./config/db');
 const PORT = process.env.PORT || 8080;
 const app = express();
 const authRouter = require('./routes/auth.route')
+const liveratesrouter = require('./routes/livearates.route')
 const AuthMiddleware = require('./middleware/auth.middleware');
 app.use(express.json());
 app.use(cors());
@@ -14,8 +15,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', authRouter);
-app.use(AuthMiddleware)
-
+// app.use(AuthMiddleware)
+app.use('/api', liveratesrouter)
 
 app.listen(PORT, async () => {
     try {
