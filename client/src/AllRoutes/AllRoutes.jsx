@@ -1,8 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import DashBoard from "../Pages/DashBoard";
 import AuthForm from "../Pages/AuthForm";
 import PrivateRoute from "./PrivateRoute";
+import Home from "../Pages/Home";
+import Dashboard from "../Pages/DashBoard";
 
 const AllRoutes = () => {
     return (
@@ -12,7 +13,7 @@ const AllRoutes = () => {
                 path="/dashboard"
                 element={
                     <PrivateRoute>
-                        <DashBoard />
+                        <Dashboard />
                     </PrivateRoute>
                 }
             ></Route>
