@@ -40,7 +40,7 @@ const authController = {
         }
     },
     signup: async (req, res) => {
-        const { username, email, password } = req.body;
+        const { username, password } = req.body;
         try {
             if (username) {
                 const UserExists = await User.findOne({ username: username });
@@ -53,17 +53,9 @@ const authController = {
                     password: HashedPass
                 })
                 return res.status(201).send({ message: "User created successfully", data: newUser });
-            } else if (email) {
-                const UserExists = await User.findOne({ email: email });
-                if (UserExists) {
-                    return res.status(400).send({ message: "Username already exists" });
-                }
-                const HashedPass = bcrypt.hashSync(password, 10);
-                const newUser = await User.create({
-                    ...req.body,
-                    password: HashedPass
-                })
-                return res.status(201).send({ message: "User created successfully", data: newUser });
+            }else{
+                return res.status(400).send({ message: "Invalid credentials" });
+        
             }
         } catch (error) {
             return res.status(500).send({ message: error.message });
